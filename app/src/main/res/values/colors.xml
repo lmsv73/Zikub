@@ -2,7 +2,7 @@
 <resources>
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
-    <color name="colorPrimary">#9aa1ab</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#939aa4</color>
+    <color name="colorPrimaryDark">#939aa4</color>
+    <color name="colorAccent">#939aa4</color>
 </resources>
