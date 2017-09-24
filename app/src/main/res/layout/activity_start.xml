@@ -89,6 +89,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_weight="0.5"
                     android:background="@drawable/sign_up_button"
+                    android:onClick="signup"
                     android:text="@string/action_sign_up"
                     android:textColor="#fff"
                     android:textStyle="bold" />
