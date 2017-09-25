@@ -5,6 +5,11 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password</string>
+    <string name="action_1"><b><font color='#ffffff'>1</font></b> \n\n Press here \n to add \n your first \n song</string>
+    <string name="action_2"><b><font color='#ffffff'>2</font></b> \n\n Press here \n to add \n your second \n song</string>
+    <string name="action_3"><b><font color='#ffffff'>3</font></b> \n\n Press here \n to add \n your third \n song</string>
+    <string name="action_4"><b><font color='#ffffff'>4</font></b> \n\n Press here \n to add \n your fourth \n song</string>
+    <string name="action_5"><b><font color='#ffffff'>5</font></b> \n\n Press here \n to add \n your last \n song</string>
     <string name="action_login">Login</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>

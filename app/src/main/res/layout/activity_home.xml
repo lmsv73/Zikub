@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:weightSum="3">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+        <Button
+            android:id="@+id/imageButton5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="end|bottom"
+            android:background="#b2bfb6"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textAllCaps="false"
+            android:text="@string/action_5" />
+
+        <Button
+            android:id="@+id/imageButton4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:background="#e2f1f1"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textAllCaps="false"
+            android:text="@string/action_4" />
+
+        <Button
+            android:id="@+id/imageButton3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="end"
+            android:background="#d1e1e8"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textAllCaps="false"
+            android:text="@string/action_3" />
+
+        <Button
+            android:id="@+id/imageButton2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#e4dfe5"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textAllCaps="false"
+            android:text="@string/action_2" />
+
+        <Button
+            android:id="@+id/imageButton1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:background="#ff4142"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textAllCaps="false"
+            android:text="@string/action_1" />
+
+        </FrameLayout>
+</LinearLayout>

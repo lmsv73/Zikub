@@ -119,7 +119,8 @@
                     android:textStyle="bold"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:layout_weight="0.4"/>
+                    android:layout_weight="0.4"
+                    android:onClick="signup" />
             </LinearLayout>
 
             <LinearLayout
