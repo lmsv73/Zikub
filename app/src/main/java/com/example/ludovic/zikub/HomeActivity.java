@@ -1,19 +1,10 @@
 package com.example.ludovic.zikub;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-
-/**
- * Created by Victor on 25/09/2017.
- */
 
 public class HomeActivity extends Activity {
 
