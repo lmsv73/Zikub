@@ -61,7 +61,7 @@
                     android:layout_marginBottom="30dp"
                     android:hint="@string/prompt_username"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -87,8 +87,8 @@
                 android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 android:padding="6dp"
                 android:weightSum="1">
 
@@ -96,14 +96,15 @@
                     android:id="@+id/email_sign_in_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/sign_up_button"
-                    android:textColor="#fff"
                     android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/sign_up_button"
+                    android:onClick="login"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:layout_weight="0.4"/>
+                    android:text="@string/action_sign_in"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
