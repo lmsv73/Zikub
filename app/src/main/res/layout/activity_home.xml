@@ -12,23 +12,25 @@
             android:layout_height="0dp"
             android:layout_weight="2">
 
-                <Button
-                    android:id="@+id/imageButton5"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="end|bottom"
-                    android:background="#b2bfb6"
-                    android:text="@string/action_5"
-                    android:textAllCaps="false" />
+        <Button
+            android:id="@+id/imageButton5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="end|bottom"
+            android:background="#b2bfb6"
+            android:text="@string/action_5"
+            android:textAllCaps="false"
+            android:onClick="music5" />
 
-                <Button
+        <Button
             android:id="@+id/imageButton4"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="bottom"
             android:background="#e2f1f1"
             android:textAllCaps="false"
-            android:text="@string/action_4" />
+            android:text="@string/action_4"
+            android:onClick="music4"/>
 
         <Button
             android:id="@+id/imageButton3"
@@ -37,7 +39,8 @@
             android:layout_gravity="end"
             android:background="#d1e1e8"
             android:textAllCaps="false"
-            android:text="@string/action_3" />
+            android:text="@string/action_3"
+            android:onClick="music3"/>
 
         <Button
             android:id="@+id/imageButton2"
@@ -45,7 +48,8 @@
             android:layout_height="0dp"
             android:background="#e4dfe5"
             android:textAllCaps="false"
-            android:text="@string/action_2" />
+            android:text="@string/action_2"
+            android:onClick="music2"/>
 
         <Button
             android:id="@+id/imageButton1"
@@ -54,7 +58,8 @@
             android:layout_gravity="center"
             android:background="#ff4142"
             android:textAllCaps="false"
-            android:text="@string/action_1" />
+            android:text="@string/action_1"
+            android:onClick="music1"/>
 
         </FrameLayout>
 </LinearLayout>

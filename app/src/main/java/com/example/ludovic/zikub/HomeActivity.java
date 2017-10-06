@@ -1,7 +1,9 @@
 package com.example.ludovic.zikub;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -49,5 +51,30 @@ public class HomeActivity extends Activity {
         imageButton4.setLayoutParams(params4);
         imageButton5.setLayoutParams(params5);
 
+    }
+    /** Called when the user taps the first music button */
+    public void music1(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+    /** Called when the user taps the second music button */
+    public void music2(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+    /** Called when the user taps the third music button */
+    public void music3(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+    /** Called when the user taps the fourth music button */
+    public void music4(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+    /** Called when the user taps the last music button */
+    public void music5(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
     }
 }
