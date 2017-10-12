@@ -1,9 +1,5 @@
 package com.example.ludovic.zikub;
 
-/**
- * Created by Victor on 12/10/2017.
- */
-
 public class Search {
     private String title;
     private String image;
