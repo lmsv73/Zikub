@@ -39,5 +39,6 @@ dependencies {
     compile('com.google.apis:google-api-services-youtube:v3-rev186-1.23.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }

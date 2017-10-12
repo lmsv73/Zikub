@@ -4,12 +4,14 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -24,47 +26,28 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends ListActivity {
-    /**
-     * Define a global variable that identifies the name of a file that
-     * contains the developer's API key.
-     */
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 5;
+public class SearchActivity extends AppCompatActivity {
 
-    /**
-     * Define a global instance of a Youtube object, which will be used
-     * to make YouTube Data API requests.
-     */
-    private static YouTube youtube;
+    ArrayList<Search> arrayList;
+    ListView lv;
 
-
-    String[] itemname ={
-            "Safari",
-            "Camera",
-            "Global",
-            "FireFox",
-            "UC Browser",
-            "Android Folder",
-            "VLC Player",
-            "Cold War"
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        this.setListAdapter(new ArrayAdapter<String>(
-                this, R.layout.liste_video,
-                R.id.Itemname,itemname));
+        arrayList = new ArrayList<>();
+        lv = (ListView) findViewById(R.id.listView);
 
         final EditText search = (EditText) findViewById(R.id.search);
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    arrayList.clear();
                     search.clearFocus();
                     InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(search.getWindowToken(), 0);
@@ -79,6 +62,20 @@ public class SearchActivity extends ListActivity {
 
 
     private class YoutubeSearchAPI extends AsyncTask<String, Void, Void> {
+
+
+
+        /**
+         * Define a global variable that identifies the name of a file that
+         * contains the developer's API key.
+         */
+        private static final long NUMBER_OF_VIDEOS_RETURNED = 5;
+
+        /**
+         * Define a global instance of a Youtube object, which will be used
+         * to make YouTube Data API requests.
+         */
+        private YouTube youtube;
 
         @Override
         protected Void doInBackground(String... params) {
@@ -129,7 +126,12 @@ public class SearchActivity extends ListActivity {
 
                             Log.v(" Video Id", rId.getVideoId());
                             Log.v(" Title: ", singleVideo.getSnippet().getTitle());
-                            Log.v(" Thumbnail: ", thumbnail.getUrl());
+                            Log.v(" Image: ",  thumbnail.getUrl());
+
+                            arrayList.add(new Search(
+                                    singleVideo.getSnippet().getTitle(),
+                                    thumbnail.getUrl()
+                            ));
                         }
                     }
                 }
@@ -145,9 +147,14 @@ public class SearchActivity extends ListActivity {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Void result) {
             //Do All UI Changes HERE
-            super.onPostExecute(aVoid);
+
+            CustomListAdapter adapter = new CustomListAdapter(
+                    getApplicationContext(), R.layout.liste_video, arrayList
+            );
+            lv.setAdapter(adapter);
+
         }
     }
 }
