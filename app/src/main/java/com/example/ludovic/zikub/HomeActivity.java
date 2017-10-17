@@ -50,4 +50,8 @@ public class HomeActivity extends Activity {
         imageButton5.setLayoutParams(params5);
 
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
