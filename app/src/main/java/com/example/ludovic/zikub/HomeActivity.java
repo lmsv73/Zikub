@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 
 public class HomeActivity extends Activity {
-
+    public final static String EXTRA_MESSAGE =
+            "com.ltm.ltmactionbar.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,29 +54,49 @@ public class HomeActivity extends Activity {
         imageButton5.setLayoutParams(params5);
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if( resultCode==1 ) {
+            String s = data.getStringExtra("indice");
+            String s2 = data.getStringExtra("url");
+
+            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, s2, Toast.LENGTH_SHORT).show();
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     /** Called when the user taps the first music button */
     public void music1(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        intent.putExtra(EXTRA_MESSAGE, "1");
+        startActivityForResult(intent, 0);
     }
     /** Called when the user taps the second music button */
     public void music2(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        intent.putExtra(EXTRA_MESSAGE, "2");
+        startActivityForResult(intent, 0);
     }
     /** Called when the user taps the third music button */
     public void music3(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        intent.putExtra(EXTRA_MESSAGE, "3");
+        startActivityForResult(intent, 0);
     }
     /** Called when the user taps the fourth music button */
     public void music4(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        intent.putExtra(EXTRA_MESSAGE, "4");
+        startActivityForResult(intent, 0);
     }
     /** Called when the user taps the last music button */
     public void music5(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
+        intent.putExtra(EXTRA_MESSAGE, "5");
+        startActivityForResult(intent, 0);
     }
 }

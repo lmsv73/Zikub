@@ -1,13 +1,16 @@
 package com.example.ludovic.zikub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,9 +40,28 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // intent
+        final Intent intent = getIntent();
+        final String numMusic = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
+        String message = "Search song " + numMusic;
+        final TextView textView3 = (TextView)findViewById( R.id.textView3 );
+        textView3.setText(message);
+
         arrayList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.listView);
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Search listItem = (Search) lv.getItemAtPosition(position);
+                Log.v("id video",listItem.getId());
+                Intent i2 = new Intent();
+                i2.putExtra("indice",numMusic);
+                i2.putExtra("url",listItem.getId());
+                SearchActivity.this.setResult(1, i2);
+                SearchActivity.this.finish();
+            }
+        });
         final EditText search = (EditText) findViewById(R.id.search);
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -67,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
          * Define a global variable that identifies the name of a file that
          * contains the developer's API key.
          */
-        private static final long NUMBER_OF_VIDEOS_RETURNED = 5;
+        private static final long NUMBER_OF_VIDEOS_RETURNED = 10;
 
         /**
          * Define a global instance of a Youtube object, which will be used
@@ -127,6 +149,7 @@ public class SearchActivity extends AppCompatActivity {
                             Log.v(" Image: ",  thumbnail.getUrl());
 
                             arrayList.add(new Search(
+                                    rId.getVideoId(),
                                     singleVideo.getSnippet().getTitle(),
                                     thumbnail.getUrl()
                             ));

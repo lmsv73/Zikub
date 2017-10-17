@@ -1,12 +1,23 @@
 package com.example.ludovic.zikub;
 
 public class Search {
+    private String id;
     private String title;
     private String image;
 
-    public Search(String title, String image) {
+
+    public Search(String id, String title, String image) {
+        this.id = id;
         this.title = title;
         this.image = image;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
