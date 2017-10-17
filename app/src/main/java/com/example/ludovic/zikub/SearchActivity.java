@@ -2,6 +2,7 @@ package com.example.ludovic.zikub;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,9 +56,14 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Search listItem = (Search) lv.getItemAtPosition(position);
                 Log.v("id video",listItem.getId());
+
+                SharedPreferences sharedPref = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
+                int id_user = sharedPref.getInt("idUser", 0);
+
                 Intent i2 = new Intent();
                 i2.putExtra("indice",numMusic);
                 i2.putExtra("url",listItem.getId());
+                i2.putExtra("id_user", id_user);
                 SearchActivity.this.setResult(1, i2);
                 SearchActivity.this.finish();
             }

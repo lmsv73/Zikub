@@ -190,9 +190,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if(result.equals("true")) {
                         int id_user = response.body().getIdUser();
 
-                        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putInt("idUser", id_user);
+                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
+
+                        sharedPreferences
+                                .edit()
+                                .putInt("idUser", id_user)
+                                .apply();
 
                         startActivity(intent);
                     }
