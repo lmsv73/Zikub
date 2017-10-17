@@ -62,11 +62,6 @@ public class HomeActivity extends Activity {
         imageButton5.setLayoutParams(params5);
 
     }
-<<<<<<< HEAD
-
-    @Override
-    public void onBackPressed() {
-=======
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -139,6 +134,9 @@ public class HomeActivity extends Activity {
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra(EXTRA_MESSAGE, "5");
         startActivityForResult(intent, 0);
->>>>>>> 1d5143b4e22666983da67361c35e05e0d33ef231
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
