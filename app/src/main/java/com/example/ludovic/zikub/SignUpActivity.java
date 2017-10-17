@@ -1,7 +1,9 @@
 package com.example.ludovic.zikub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,8 +62,16 @@ public class SignUpActivity extends Activity {
                 String wrongEmail = new Gson().toJson(response.body().getExistMail());
 
                 if (response.isSuccessful()) {
-                    if(result.equals("true"))
+                    if(result.equals("true")) {
+                        int id_user = response.body().getIdUser();
+
+                        SharedPreferences sharedPref = SignUpActivity.this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("idUser", id_user);
+
                         startActivity(intent);
+                    }
+
                     else {
                         if(wrongLogin.equals("true")) {
                             TextView usernameExist = (TextView) findViewById(R.id.usernameExist);

@@ -17,6 +17,10 @@ public class Result {
     @Expose
     private boolean existMail;
 
+    @SerializedName("id_user")
+    @Expose
+    private int id_user;
+
     public boolean getSuccess() {
         return success;
     }
@@ -27,5 +31,9 @@ public class Result {
 
     public boolean getExistMail() {
         return existMail;
+    }
+
+    public int getIdUser() {
+        return id_user;
     }
 }

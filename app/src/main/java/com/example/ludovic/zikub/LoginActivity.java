@@ -3,7 +3,9 @@ package com.example.ludovic.zikub;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.CursorJoiner;
 import android.support.annotation.NonNull;
@@ -185,8 +187,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 String result = new Gson().toJson(response.body().getSuccess());
                 if (response.isSuccessful()) {
                     // tasks available
-                    if(result.equals("true"))
+                    if(result.equals("true")) {
+                        int id_user = response.body().getIdUser();
+
+                        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("idUser", id_user);
+
                         startActivity(intent);
+                    }
                     else {
                         TextView error = (TextView) findViewById(R.id.errorLogin);
                         error.setVisibility(View.VISIBLE);
