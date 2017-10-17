@@ -71,6 +71,9 @@ public class HomeActivity extends Activity {
         final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
         final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
 
+        int width = (getResources().getDisplayMetrics().widthPixels) / 2;
+        int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
+
         if( resultCode==1 ) {
             String indice = data.getStringExtra("indice");
             String url = data.getStringExtra("url");
@@ -78,19 +81,19 @@ public class HomeActivity extends Activity {
             switch (indice)
             {
                 case "1":
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton1);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton1);
                     break;
                 case "2":
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton2);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton2);
                     break;
                 case "3":
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton3);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton3);
                     break;
                 case "4":
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton4);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton4);
                     break;
                 case "5":
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton5);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton5);
                     break;
                 default:
                     Log.v("erreur","indice faux");
