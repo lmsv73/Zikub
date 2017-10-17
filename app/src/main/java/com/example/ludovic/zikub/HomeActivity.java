@@ -2,27 +2,35 @@ package com.example.ludovic.zikub;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 
 public class HomeActivity extends Activity {
+
     public final static String EXTRA_MESSAGE =
             "com.ltm.ltmactionbar.MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Button imageButton1 = (Button) findViewById(R.id.imageButton1);
-        Button imageButton2 = (Button) findViewById(R.id.imageButton2);
-        Button imageButton3 = (Button) findViewById(R.id.imageButton3);
-        Button imageButton4 = (Button) findViewById(R.id.imageButton4);
-        Button imageButton5 = (Button) findViewById(R.id.imageButton5);
+        final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
+        final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+        final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
+        final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
+        final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
 
         int width = (getResources().getDisplayMetrics().widthPixels) / 2;
         int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
@@ -57,12 +65,37 @@ public class HomeActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if( resultCode==1 ) {
-            String s = data.getStringExtra("indice");
-            String s2 = data.getStringExtra("url");
+        final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
+        final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+        final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
+        final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
+        final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
 
-            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, s2, Toast.LENGTH_SHORT).show();
+        if( resultCode==1 ) {
+            String indice = data.getStringExtra("indice");
+            String url = data.getStringExtra("url");
+
+            switch (indice)
+            {
+                case "1":
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton1);
+                    break;
+                case "2":
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton2);
+                    break;
+                case "3":
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton3);
+                    break;
+                case "4":
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton4);
+                    break;
+                case "5":
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").into(imageButton5);
+                    break;
+                default:
+                    Log.v("erreur","indice faux");
+            }
+
 
         }
 

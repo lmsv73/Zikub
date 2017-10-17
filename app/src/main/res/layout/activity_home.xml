@@ -12,7 +12,7 @@
             android:layout_height="0dp"
             android:layout_weight="2">
 
-        <Button
+        <ImageButton
             android:id="@+id/imageButton5"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -22,7 +22,7 @@
             android:textAllCaps="false"
             android:onClick="music5" />
 
-        <Button
+        <ImageButton
             android:id="@+id/imageButton4"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -32,7 +32,7 @@
             android:text="@string/action_4"
             android:onClick="music4"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/imageButton3"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -42,7 +42,7 @@
             android:text="@string/action_3"
             android:onClick="music3"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -51,7 +51,7 @@
             android:text="@string/action_2"
             android:onClick="music2"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/imageButton1"
             android:layout_width="0dp"
             android:layout_height="0dp"
