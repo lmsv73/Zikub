@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 
@@ -65,12 +66,6 @@ public class HomeActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
-        final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
-        final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
-        final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
-        final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
-
         int width = (getResources().getDisplayMetrics().widthPixels) / 2;
         int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
 
@@ -81,18 +76,23 @@ public class HomeActivity extends Activity {
             switch (indice)
             {
                 case "1":
+                    final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
                     Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton1);
                     break;
                 case "2":
+                    final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
                     Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton2);
                     break;
                 case "3":
+                    final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
                     Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton3);
                     break;
                 case "4":
+                    final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
                     Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton4);
                     break;
                 case "5":
+                    final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
                     Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton5);
                     break;
                 default:
