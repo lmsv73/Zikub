@@ -20,7 +20,8 @@
             android:background="#b2bfb6"
             android:text="@string/action_5"
             android:textAllCaps="false"
-            android:onClick="music5" />
+            android:onClick="music"
+            android:tag="5"/>
 
         <ImageButton
             android:id="@+id/imageButton4"
@@ -30,7 +31,8 @@
             android:background="#e2f1f1"
             android:textAllCaps="false"
             android:text="@string/action_4"
-            android:onClick="music4"/>
+            android:onClick="music"
+            android:tag="4"/>
 
         <ImageButton
             android:id="@+id/imageButton3"
@@ -40,7 +42,8 @@
             android:background="#d1e1e8"
             android:textAllCaps="false"
             android:text="@string/action_3"
-            android:onClick="music3"/>
+            android:onClick="music"
+            android:tag="3"/>
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -49,7 +52,8 @@
             android:background="#e4dfe5"
             android:textAllCaps="false"
             android:text="@string/action_2"
-            android:onClick="music2"/>
+            android:onClick="music"
+            android:tag="2"/>
 
         <ImageButton
             android:id="@+id/imageButton1"
@@ -59,7 +63,8 @@
             android:background="#ff4142"
             android:textAllCaps="false"
             android:text="@string/action_1"
-            android:onClick="music1"/>
+            android:onClick="music"
+            android:tag="1"/>
 
         </FrameLayout>
 </LinearLayout>

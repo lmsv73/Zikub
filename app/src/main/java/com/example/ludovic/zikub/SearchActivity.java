@@ -64,6 +64,7 @@ public class SearchActivity extends AppCompatActivity {
                 i2.putExtra("indice",numMusic);
                 i2.putExtra("url",listItem.getId());
                 i2.putExtra("id_user", id_user);
+
                 SearchActivity.this.setResult(1, i2);
                 SearchActivity.this.finish();
             }

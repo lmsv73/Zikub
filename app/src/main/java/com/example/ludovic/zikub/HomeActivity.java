@@ -1,7 +1,9 @@
 package com.example.ludovic.zikub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeActivity extends Activity {
@@ -72,6 +81,11 @@ public class HomeActivity extends Activity {
         if( resultCode==1 ) {
             String indice = data.getStringExtra("indice");
             String url = data.getStringExtra("url");
+            int id_user = data.getIntExtra("id_user", 0);
+
+            Log.v("ok", indice);
+            Log.v("ok", url);
+            Log.v("ok", Integer.toString(id_user));
 
             switch (indice)
             {
@@ -100,40 +114,58 @@ public class HomeActivity extends Activity {
             }
 
 
+            insertMusic(url, Integer.parseInt(indice), id_user);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     /** Called when the user taps the first music button */
-    public void music1(View view) {
+    public void music(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "1");
+        intent.putExtra(EXTRA_MESSAGE, view.getTag().toString());
         startActivityForResult(intent, 0);
     }
-    /** Called when the user taps the second music button */
-    public void music2(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "2");
-        startActivityForResult(intent, 0);
-    }
-    /** Called when the user taps the third music button */
-    public void music3(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "3");
-        startActivityForResult(intent, 0);
-    }
-    /** Called when the user taps the fourth music button */
-    public void music4(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "4");
-        startActivityForResult(intent, 0);
-    }
-    /** Called when the user taps the last music button */
-    public void music5(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "5");
-        startActivityForResult(intent, 0);
+
+    public void insertMusic(String url, int indice, int id_user)
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.10.10/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ZikubService service = retrofit.create(ZikubService.class);
+        Call<Result> result = service.addMusic(
+                id_user,
+                url,
+                indice
+        );
+
+        result.enqueue(new retrofit2.Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                String result = new Gson().toJson(response.body().getSuccess());
+                if (response.isSuccessful()) {
+                    // tasks available
+                    if(result.equals("true")) {
+
+                    }
+                    else {
+
+                    }
+                } else {
+                    // error response, no access to resource?
+                    Log.v("fail", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                // something went completely south (like no internet connection)
+                Log.d("Error", t.getMessage());
+            }
+        });
+
     }
 
     @Override

@@ -21,6 +21,7 @@ public class Result {
     @Expose
     private int id_user;
 
+
     public boolean getSuccess() {
         return success;
     }

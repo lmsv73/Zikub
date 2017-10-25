@@ -17,4 +17,11 @@ public interface ZikubService {
         @Path("login") String login,
         @Path("pwd") String pwd
     );
+
+    @GET("/addMusic/{id_user}/{url}/{indice}")
+    Call<Result> addMusic(
+        @Path("id_user") int id_user,
+        @Path("url") String url,
+        @Path("indice") int indice
+    );
 }
