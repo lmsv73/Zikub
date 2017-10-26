@@ -19,6 +19,9 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -30,47 +33,33 @@ public class HomeActivity extends Activity {
     public final static String EXTRA_MESSAGE =
             "com.ltm.ltmactionbar.MESSAGE";
 
+    private List<ImageButton> imgBtn;
+    private static final int[] BUTTON_IDS = {
+            R.id.imageButton1,
+            R.id.imageButton2,
+            R.id.imageButton3,
+            R.id.imageButton4,
+            R.id.imageButton5
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
-        final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
-        final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
-        final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
-        final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
-
+        imgBtn = new ArrayList<ImageButton>();
         int width = (getResources().getDisplayMetrics().widthPixels) / 2;
         int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
 
-        FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) imageButton1.getLayoutParams();
-        params1.width = width;
-        params1.height = height;
+        for(int id : BUTTON_IDS) {
+            ImageButton imButton = (ImageButton) findViewById(id);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imButton.getLayoutParams();
+            params.width = width;
+            params.height = height;
 
-        FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) imageButton2.getLayoutParams();
-        params2.width = width;
-        params2.height = height;
-
-        FrameLayout.LayoutParams params3 = (FrameLayout.LayoutParams) imageButton3.getLayoutParams();
-        params3.width = width;
-        params3.height = height;
-
-        FrameLayout.LayoutParams params4 = (FrameLayout.LayoutParams) imageButton4.getLayoutParams();
-        params4.width = width;
-        params4.height = height;
-
-        FrameLayout.LayoutParams params5 = (FrameLayout.LayoutParams) imageButton5.getLayoutParams();
-        params5.width = width;
-        params5.height = height;
-
-        imageButton1.setLayoutParams(params1);
-        imageButton2.setLayoutParams(params2);
-        imageButton3.setLayoutParams(params3);
-        imageButton4.setLayoutParams(params4);
-        imageButton5.setLayoutParams(params5);
-
+            imButton.setLayoutParams(params);
+        }
     }
 
     @Override
@@ -79,37 +68,19 @@ public class HomeActivity extends Activity {
         int width = (getResources().getDisplayMetrics().widthPixels) / 2;
         int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
 
-        if( resultCode==1 ) {
+        if( resultCode == 1 ) {
             String indice = data.getStringExtra("indice");
             String url = data.getStringExtra("url");
             int id_user = data.getIntExtra("id_user", 0);
 
-            switch (indice)
-            {
-                case "1":
-                    final ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButton1);
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton1);
-                    break;
-                case "2":
-                    final ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton2);
-                    break;
-                case "3":
-                    final ImageButton imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton3);
-                    break;
-                case "4":
-                    final ImageButton imageButton4 = (ImageButton) findViewById(R.id.imageButton4);
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton4);
-                    break;
-                case "5":
-                    final ImageButton imageButton5 = (ImageButton) findViewById(R.id.imageButton5);
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imageButton5);
-                    break;
-                default:
-                    Log.v("erreur","indice faux");
-            }
+            imgBtn = new ArrayList<ImageButton>();
 
+            for(int id : BUTTON_IDS) {
+                if(Integer.parseInt(indice) == id) {
+                    ImageButton imButton = (ImageButton) findViewById(id);
+                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imButton);
+                }
+            }
 
             insertMusic(url, Integer.parseInt(indice), id_user);
         }
