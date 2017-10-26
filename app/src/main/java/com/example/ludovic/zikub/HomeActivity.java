@@ -72,6 +72,7 @@ public class HomeActivity extends Activity {
         imageButton5.setLayoutParams(params5);
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -82,10 +83,6 @@ public class HomeActivity extends Activity {
             String indice = data.getStringExtra("indice");
             String url = data.getStringExtra("url");
             int id_user = data.getIntExtra("id_user", 0);
-
-            Log.v("ok", indice);
-            Log.v("ok", url);
-            Log.v("ok", Integer.toString(id_user));
 
             switch (indice)
             {
@@ -145,17 +142,8 @@ public class HomeActivity extends Activity {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 String result = new Gson().toJson(response.body().getSuccess());
-                if (response.isSuccessful()) {
-                    // tasks available
-                    if(result.equals("true")) {
-
-                    }
-                    else {
-
-                    }
-                } else {
-                    // error response, no access to resource?
-                    Log.v("fail", response.toString());
+                if (!response.isSuccessful() || result.equals("false")) {
+                    // Relancer la recherche
                 }
             }
 
