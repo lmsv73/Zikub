@@ -69,7 +69,7 @@ public class HomeActivity extends Activity {
                 playlist.addAll(response.body());
 
                 if (!response.isSuccessful()) {
-                    // Relancer la recherche
+                    // TODO Relancer la recherche
 
                 } else {
                     // Charger les images
@@ -164,7 +164,7 @@ public class HomeActivity extends Activity {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 String result = new Gson().toJson(response.body().getSuccess());
                 if (!response.isSuccessful() || result.equals("false")) {
-                    // Relancer la recherche
+                    // TODO Relancer la recherche
                 }
             }
 
