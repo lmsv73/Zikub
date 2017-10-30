@@ -4,45 +4,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class HomeActivity extends Activity {
-
-    private static HomeActivity instance;
-
-    public static Context getContext() {
-        return instance;
-    }
 
     public final static String EXTRA_MESSAGE =
             "com.ltm.ltmactionbar.MESSAGE";
 
     private List<ImageButton> imgBtn;
+
+    /**
+     * Représente les ID des bouttons des musiques de la playlist
+     */
     private static final int[] BUTTON_IDS = {
             R.id.imageButton1,
             R.id.imageButton2,
@@ -51,6 +36,11 @@ public class HomeActivity extends Activity {
             R.id.imageButton5
     };
 
+    /**
+     * Représente un tableau pour les musiques de la playlist.
+     * Chaque indice correspond à l'indice du boutton.
+     * Si la valeur de l'indice est à 0, le boutton correspondant n'a aucune musique associée.
+     */
     private static final int[] VOID_MUSIC = { 0, 0, 0, 0, 0};
 
     @Override
@@ -86,7 +76,7 @@ public class HomeActivity extends Activity {
                     int width = (getResources().getDisplayMetrics().widthPixels) / 2;
                     int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
 
-
+                    // Pour chaque musique de la playlist, on met à 1 la valeur du tableau VOID_MUSIC
                     for (Music m : playlist)
                         VOID_MUSIC[m.getIndice()-1] = 1;
 
