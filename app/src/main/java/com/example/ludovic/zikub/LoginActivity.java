@@ -170,52 +170,53 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         TextView username = (TextView) findViewById(R.id.username);
         TextView pwd = (TextView) findViewById(R.id.password);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.10/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if(!username.getText().toString().matches("") && !pwd.getText().toString().matches("")) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.10.10/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        ZikubService service = retrofit.create(ZikubService.class);
-        Call<Result> result = service.login(
-                username.getText().toString(),
-                pwd.getText().toString()
-        );
+            ZikubService service = retrofit.create(ZikubService.class);
+            Call<Result> result = service.login(
+                    username.getText().toString(),
+                    pwd.getText().toString()
+            );
 
-        result.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                String result = new Gson().toJson(response.body().getSuccess());
-                if (response.isSuccessful()) {
-                    // tasks available
-                    if(result.equals("true")) {
-                        int id_user = response.body().getIdUser();
+            result.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    String result = new Gson().toJson(response.body().getSuccess());
+                    if (response.isSuccessful()) {
+                        // tasks available
+                        if(result.equals("true")) {
+                            int id_user = response.body().getIdUser();
 
-                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
+                            SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
 
-                        sharedPreferences
-                                .edit()
-                                .putInt("idUser", id_user)
-                                .apply();
+                            sharedPreferences
+                                    .edit()
+                                    .putInt("idUser", id_user)
+                                    .apply();
 
-                        startActivity(intent);
+                            startActivity(intent);
+                        }
+                        else {
+                            TextView error = (TextView) findViewById(R.id.errorLogin);
+                            error.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        // error response, no access to resource?
+                        Log.v("fail", response.toString());
                     }
-                    else {
-                        TextView error = (TextView) findViewById(R.id.errorLogin);
-                        error.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    // error response, no access to resource?
-                    Log.v("fail", response.toString());
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Log.d("Error", t.getMessage());
-            }
-        });
-
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    // something went completely south (like no internet connection)
+                    Log.d("Error", t.getMessage());
+                }
+            });
+        }
     }
 
     private boolean isEmailValid(String email) {
