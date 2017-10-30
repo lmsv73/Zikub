@@ -3,23 +3,23 @@ package com.example.ludovic.zikub;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class Result {
 
     @SerializedName("success")
-    @Expose
     private boolean success;
 
     @SerializedName("existLogin")
-    @Expose
     private boolean existLogin;
 
     @SerializedName("existMail")
-    @Expose
     private boolean existMail;
 
     @SerializedName("id_user")
-    @Expose
     private int id_user;
+
+
 
 
     public boolean getSuccess() {
@@ -34,7 +34,6 @@ public class Result {
         return existMail;
     }
 
-    public int getIdUser() {
-        return id_user;
-    }
+    public int getIdUser() {return id_user; }
+
 }

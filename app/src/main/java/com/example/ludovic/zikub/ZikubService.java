@@ -1,5 +1,8 @@
 package com.example.ludovic.zikub;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.Call;
@@ -23,5 +26,10 @@ public interface ZikubService {
         @Path("id_user") int id_user,
         @Path("url") String url,
         @Path("indice") int indice
+    );
+
+    @GET("/getPlaylist/{id_user}")
+    Call<ArrayList<Music>> getPlaylist(
+        @Path("id_user") int id_user
     );
 }
