@@ -14,6 +14,7 @@
     <string name="action_login">Login</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
+    <string name="action_share">Share your Player</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -27,6 +28,7 @@
     <string name="description_sign_in">Welcome back. Nice to meet you again!</string>
     <string name="description_search">Search song</string>
     <string name="description_sign_up">Sign Up and start to share your music</string>
+    <string name="titre_music">Title</string>
     <string name="description_main_page_text">Share your favorite music to your friends.</string>
     <string name="login_social_text">Login with social</string>
     <string name="term_condition_text"><u>Terms et Conditions</u></string>

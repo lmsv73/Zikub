@@ -4,19 +4,37 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
+
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.example.ludovic.zikub.JsonReader.readJsonFromUrl;
 
 public class HomeActivity extends Activity {
 
@@ -24,6 +42,9 @@ public class HomeActivity extends Activity {
             "com.ltm.ltmactionbar.MESSAGE";
 
     private List<ImageButton> imgBtn;
+
+    private MediaPlayer player;
+    private long currentSongLength;
 
     /**
      * Représente les ID des bouttons des musiques de la playlist
@@ -52,6 +73,9 @@ public class HomeActivity extends Activity {
         SharedPreferences prefs = this.getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
         int id_user = prefs.getInt("idUser", 0);
 
+        final TextView title_music = (TextView)findViewById(R.id.title_music);
+        final ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.10.10/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -65,13 +89,15 @@ public class HomeActivity extends Activity {
         result.enqueue(new retrofit2.Callback<ArrayList<Music>>() {
             @Override
             public void onResponse(Call<ArrayList<Music>> call, Response<ArrayList<Music>> response) {
-
                 playlist.addAll(response.body());
+
+                ResponseBody body = response.raw().body();
 
                 if (!response.isSuccessful()) {
                     // TODO Relancer la recherche
 
                 } else {
+
                     // Charger les images
                     int width = (getResources().getDisplayMetrics().widthPixels) / 2;
                     int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
@@ -93,12 +119,30 @@ public class HomeActivity extends Activity {
 
                         // Affichage de l'image chargée via l'api youtube
                         if(VOID_MUSIC[indice-1] == 1) {
-                            for(Music m : playlist) {
-                                if(m.getIndice() == indice)
-                                    Picasso.with(HomeActivity.this).load("https://img.youtube.com/vi/"+m.getUrl()+"/mqdefault.jpg").resize(width, height).centerCrop().into(imButton);
+                            for(final Music m : playlist) {
+                                if(m.getIndice() == indice) {
+                                    Picasso.with(HomeActivity.this).load("https://img.youtube.com/vi/" + m.getUrl() + "/mqdefault.jpg").resize(width, height).centerCrop().into(imButton);
+                                    imButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (player != null && player.isPlaying()) {
+                                                player.pause();
+                                            }
+                                            new YoutubeExtractor().execute(m.getUrl());
+                                            playpause.setBackgroundResource(R.drawable.ic_play);
+                                            title_music.setText(getTitleQuietly(m.getUrl()));
+                                    }
+                                    });
+                                    imButton.setOnLongClickListener(new View.OnLongClickListener() {
+                                        @Override
+                                        public boolean onLongClick(View v) {
+                                            music(v);
+                                            return true;
+                                        }
+                                    });
+                                }
                             }
                         }
-
                         indice ++;
                     }
                 }
@@ -110,17 +154,46 @@ public class HomeActivity extends Activity {
                 Log.d("Error", t.getMessage());
             }
         });
+
+        //Gestion de la Seekbar
+        handleSeekbar();
+
     }
+
+    private void handleSeekbar(){
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (player != null && fromUser) {
+                    player.seekTo(progress * 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         int width = (getResources().getDisplayMetrics().widthPixels) / 2;
         int height = (int) ((getResources().getDisplayMetrics().heightPixels) /  3.1);
+        final TextView title_music = (TextView)findViewById(R.id.title_music);
+        final ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
 
         if( resultCode == 1 ) {
             String indice = data.getStringExtra("indice");
-            String url = data.getStringExtra("url");
+            final String url = data.getStringExtra("url");
             int id_user = data.getIntExtra("id_user", 0);
 
             imgBtn = new ArrayList<ImageButton>();
@@ -128,8 +201,27 @@ public class HomeActivity extends Activity {
             for(int id : BUTTON_IDS) {
                 ImageButton imButton = (ImageButton) findViewById(id);
 
-                if(indice.equals(imButton.getTag().toString()))
-                    Picasso.with(this).load("https://img.youtube.com/vi/"+url+"/mqdefault.jpg").resize(width, height).centerCrop().into(imButton);
+                if(indice.equals(imButton.getTag().toString())) {
+                    Picasso.with(this).load("https://img.youtube.com/vi/" + url + "/mqdefault.jpg").resize(width, height).centerCrop().into(imButton);
+                    imButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (player != null && player.isPlaying()) {
+                                player.pause();
+                            }
+                            new YoutubeExtractor().execute(url);
+                            playpause.setBackgroundResource(R.drawable.ic_play);
+                            title_music.setText(getTitleQuietly(url));
+                        }
+                    });
+                    imButton.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            music(v);
+                            return true;
+                        }
+                    });
+                }
             }
 
             insertMusic(url, Integer.parseInt(indice), id_user);
@@ -143,6 +235,11 @@ public class HomeActivity extends Activity {
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra(EXTRA_MESSAGE, view.getTag().toString());
         startActivityForResult(intent, 0);
+    }
+
+    /** Called when the user taps the share button */
+    public void share(View view) {
+        //TODO Activity ou autre chose....
     }
 
     public void insertMusic(String url, int indice, int id_user)
@@ -180,4 +277,130 @@ public class HomeActivity extends Activity {
     @Override
     public void onBackPressed() {
     }
-}
+
+
+    public void PlayStream(String URL) {
+        releaseMP();
+
+        try {
+            player = new MediaPlayer();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(this, Uri.parse(URL));
+            player.prepare();
+
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    currentSongLength =  mp.getDuration();
+                    //Lancer la chanson
+                    togglePlay(mp);
+                }
+            });
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
+                    playpause.setBackgroundResource(R.drawable.ic_play);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void releaseMP() {
+        if (player != null) {
+            try {
+                player.release();
+                player = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void togglePlay(MediaPlayer mp) {
+        ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
+
+        if(mp.isPlaying()){
+            mp.stop();
+            mp.reset();
+        }else {
+            final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
+            final TextView time = (TextView) findViewById(R.id.time);
+            mp.start();
+            playpause.setBackgroundResource(R.drawable.ic_pause);
+            final Handler mHandler = new Handler();
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    seekBar.setMax((int) currentSongLength / 1000);
+                    int mCurrentPosition = player.getCurrentPosition() / 1000;
+                    seekBar.setProgress(mCurrentPosition);
+                    time.setText(convertDuration((long) player.getCurrentPosition()));
+                    mHandler.postDelayed(this, 1000);
+                }
+            });
+        }
+    }
+
+    public static String convertDuration(long duration){
+
+        long minutes = (duration / 1000 ) / 60;
+        long seconds = (duration / 1000 ) % 60;
+
+        String converted = String.format("%d:%02d", minutes, seconds);
+        return converted;
+
+
+    }
+
+
+
+    /** Called when the user taps the play button */
+    public void PlayPause(View view) {
+        if(player != null) {
+            ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
+            if (player.isPlaying()) {
+                player.pause();
+                playpause.setBackgroundResource(R.drawable.ic_play);
+            } else {
+                player.start();
+                playpause.setBackgroundResource(R.drawable.ic_pause);
+            }
+        }
+    }
+
+    public static String getTitleQuietly(String ID) {
+        JSONObject json = null;
+        String title = null;
+        try {
+            json = readJsonFromUrl("http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=" + ID + "&format=json");
+            title = json.get("title").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return title;
+    }
+
+    private class YoutubeExtractor extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            String youtubeLink = "http://youtube.com/watch?v="+params[0];
+            new YouTubeExtractor(getApplicationContext()) {
+                @Override
+                public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
+                    if (ytFiles != null) {
+                        int itag = 140;
+                        String downloadUrl = ytFiles.get(itag).getUrl();
+                        PlayStream(downloadUrl);
+                    }
+                }
+            }.extract(youtubeLink, true, true);
+            return null;
+        }
+    }
+
+    }

@@ -25,11 +25,5 @@ public class StartActivity extends Activity{
         startActivity(intent);
     }
 
-    /** Called when the user taps the Login button */
-    public void facebook(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-    }
-
 }
 
