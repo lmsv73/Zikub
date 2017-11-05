@@ -40,7 +40,7 @@ public class SignUpActivity extends Activity {
         TextView pwd = (TextView) findViewById(R.id.password);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.10/")
+                .baseUrl("http://54.37.68.6/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

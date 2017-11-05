@@ -77,7 +77,7 @@ public class HomeActivity extends Activity {
         final ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.10/")
+                .baseUrl("http://54.37.68.6/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -245,7 +245,7 @@ public class HomeActivity extends Activity {
     public void insertMusic(String url, int indice, int id_user)
     {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.10/")
+                .baseUrl("http://54.37.68.6/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
