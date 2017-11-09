@@ -41,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // intent
+        // Intent : Récupère une variable passé d'une Activity à une autre.
         final Intent intent = getIntent();
         final String numMusic = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
         String message = "Search song " + numMusic;
@@ -55,8 +55,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Search listItem = (Search) lv.getItemAtPosition(position);
-                Log.v("id video",listItem.getId());
 
+                //id User;
                 SharedPreferences sharedPref = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
                 int id_user = sharedPref.getInt("idUser", 0);
 
@@ -151,10 +151,6 @@ public class SearchActivity extends AppCompatActivity {
                         if (rId.getKind().equals("youtube#video")) {
                             Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().getDefault();
 
-                            Log.v(" Video Id", rId.getVideoId());
-                            Log.v(" Title: ", singleVideo.getSnippet().getTitle());
-                            Log.v(" Image: ",  thumbnail.getUrl());
-
                             arrayList.add(new Search(
                                     rId.getVideoId(),
                                     singleVideo.getSnippet().getTitle(),
@@ -174,10 +170,12 @@ public class SearchActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * Après la recherche sur l'API terminé je set ma liste de vidéo avec l'utilisation de mon Custom Adapter
+         * @param result Void
+         */
         @Override
         protected void onPostExecute(Void result) {
-            //Do All UI Changes HERE
-
             CustomListAdapter adapter = new CustomListAdapter(
                     getApplicationContext(), R.layout.liste_video, arrayList
             );

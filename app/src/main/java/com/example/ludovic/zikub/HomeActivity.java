@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Handler;
-
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
 import at.huber.youtubeExtractor.YtFile;
@@ -41,13 +40,19 @@ public class HomeActivity extends Activity {
     public final static String EXTRA_MESSAGE =
             "com.ltm.ltmactionbar.MESSAGE";
 
+
     private List<ImageButton> imgBtn;
 
+    /**
+     * Player utilisé dans notre application
+     */
     private MediaPlayer player;
+
+    //Variable mise à jour toutes les secondes pour garder en mémoire où on en dans la musique
     private long currentSongLength;
 
     /**
-     * Représente les ID des bouttons des musiques de la playlist
+     * Représente les ID des boutons des musiques de la playlist
      */
     private static final int[] BUTTON_IDS = {
             R.id.imageButton1,
@@ -59,8 +64,8 @@ public class HomeActivity extends Activity {
 
     /**
      * Représente un tableau pour les musiques de la playlist.
-     * Chaque indice correspond à l'indice du boutton.
-     * Si la valeur de l'indice est à 0, le boutton correspondant n'a aucune musique associée.
+     * Chaque indice correspond à l'indice du bouton.
+     * Si la valeur de l'indice est à 0, le bouton correspondant n'a aucune musique associée.
      */
     private static final int[] VOID_MUSIC = { 0, 0, 0, 0, 0};
 
@@ -70,12 +75,14 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         SharedPreferences prefs = this.getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
         int id_user = prefs.getInt("idUser", 0);
 
         final TextView title_music = (TextView)findViewById(R.id.title_music);
         final ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
 
+        //Utilisation de la bibliothèque Retrofit pour
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://54.37.68.6/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -160,6 +167,9 @@ public class HomeActivity extends Activity {
 
     }
 
+    /**
+     * Méthode qui gère la progression de la seekbar toutes les secondes
+     */
     private void handleSeekbar(){
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -183,6 +193,12 @@ public class HomeActivity extends Activity {
     }
 
 
+    /**
+     * Méthode qui est appelé lors de la sélection d'une musique dans la recherche.
+     *  - Enregistre l'image de la vidéo dans le carré et la rogne grâce à Picasso
+     *  - Change les listeners sur les cliques (LongClick -> changer de vidéo/ Click -> lire la vidéo)
+     *  - Appelle la méthode insertMusic pour insérer notre choix en base sur le serveur
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -242,6 +258,27 @@ public class HomeActivity extends Activity {
         //TODO Activity ou autre chose....
     }
 
+    /** Called when the user taps the play button */
+    public void PlayPause(View view) {
+        if(player != null) {
+            ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
+            if (player.isPlaying()) {
+                player.pause();
+                playpause.setBackgroundResource(R.drawable.ic_play);
+            } else {
+                player.start();
+                playpause.setBackgroundResource(R.drawable.ic_pause);
+            }
+        }
+    }
+
+    /**
+     * Utilise Retrofit pour ajouter une musique pour l'utilisateur dans le serveur.
+     *
+     * @param url String
+     * @param indice int
+     * @param id_user int
+     */
     public void insertMusic(String url, int indice, int id_user)
     {
         Retrofit retrofit = new Retrofit.Builder()
@@ -274,11 +311,20 @@ public class HomeActivity extends Activity {
 
     }
 
+    /**
+     * Méthode pour empécher le retour sur la page login de l'application lorsque l'utilisateur s'est connecté.
+     * TODO : Bouton déconnexion
+     */
     @Override
     public void onBackPressed() {
     }
 
 
+    /**
+     * Méthode qui prend un id vidéo en paramètre et lance la musique.
+     *
+     * @param URL String
+     */
     public void PlayStream(String URL) {
         releaseMP();
 
@@ -308,6 +354,9 @@ public class HomeActivity extends Activity {
         }
     }
 
+    /**
+     * Méthode qui détruit le media player pour eviter des conflits avec le stream audio.
+     */
     private void releaseMP() {
         if (player != null) {
             try {
@@ -319,6 +368,10 @@ public class HomeActivity extends Activity {
         }
     }
 
+    /**
+     * Méthode qui prend un mediaPlayer et qui lance la musique en mettant à jour la seekbar et le temps.
+     * @param mp Mediaplayer
+     */
     private void togglePlay(MediaPlayer mp) {
         ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
 
@@ -344,6 +397,11 @@ public class HomeActivity extends Activity {
         }
     }
 
+    /**
+     * Fonction qui retourne la durée en minutes et secondes à partir des millisecondes
+     * @param duration long
+     * @return
+     */
     public static String convertDuration(long duration){
 
         long minutes = (duration / 1000 ) / 60;
@@ -355,22 +413,12 @@ public class HomeActivity extends Activity {
 
     }
 
-
-
-    /** Called when the user taps the play button */
-    public void PlayPause(View view) {
-        if(player != null) {
-            ImageButton playpause = (ImageButton) findViewById(R.id.playpause);
-            if (player.isPlaying()) {
-                player.pause();
-                playpause.setBackgroundResource(R.drawable.ic_play);
-            } else {
-                player.start();
-                playpause.setBackgroundResource(R.drawable.ic_pause);
-            }
-        }
-    }
-
+    /**
+     * Fonction qui retourne le titre de la vidéo facilement en utilisant la classe JsonReader à partir de son ID.
+     *
+     * @param ID Id de la vidéo
+     * @return Titre de la vidéo
+     */
     public static String getTitleQuietly(String ID) {
         JSONObject json = null;
         String title = null;
@@ -385,6 +433,9 @@ public class HomeActivity extends Activity {
         return title;
     }
 
+    /**
+     * Bibliothèque qui extrait la musique .AAC d'une vidéo Youtube à partir de son ID.
+     */
     private class YoutubeExtractor extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {

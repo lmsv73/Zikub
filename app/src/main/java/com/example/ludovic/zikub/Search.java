@@ -1,5 +1,11 @@
 package com.example.ludovic.zikub;
 
+/**
+ * Classe utilisé pour récupérer une vidéo depuis l'API Youtube.
+ * - ID url
+ * - Titre de la vidéo
+ * - ID de l'image
+ */
 public class Search {
     private String id;
     private String title;

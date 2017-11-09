@@ -2,6 +2,11 @@ package com.example.ludovic.zikub;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Classe représentant une Music
+ * - Un indice (1,2,3,4,5)
+ * - Un id video (2f2ze651fez)
+ */
 public class Music {
 
     @SerializedName("indice")

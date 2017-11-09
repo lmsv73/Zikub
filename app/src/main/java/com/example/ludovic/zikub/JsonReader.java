@@ -1,9 +1,5 @@
 package com.example.ludovic.zikub;
 
-/**
- * Created by Victor on 04/11/2017.
- */
-
 import android.os.StrictMode;
 
 import java.io.BufferedReader;
@@ -17,6 +13,10 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Classe utilisé pour lire du Json depuis une URL sans passer par Retrofit.
+ *  - Utilisé pour récupérer le titre de la vidéo Youtube lorsqu'on la lance.
+ */
     public class JsonReader {
 
         private static String readAll(Reader rd) throws IOException {

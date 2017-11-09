@@ -1,12 +1,14 @@
 package com.example.ludovic.zikub;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.Call;
 
+/**
+ * Interface pour Retrofit qui contient les routes pour le service REST Web.
+ */
 public interface ZikubService {
     @GET("/signup/{mail}/{username}/{pwd}")
     Call<Result> signUp(

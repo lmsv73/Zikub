@@ -8,11 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
+/**
+ * Le CustomListAdapter sert à construire ma liste de 10 musiques récupéré sur Youtube.
+ *
+ * La liste contient :
+ *  - une image (chargé avec Picasso)
+ *  - le titre de la vidéo
+ *
+ */
 
 public class CustomListAdapter extends ArrayAdapter<Search>{
     ArrayList<Search> searches;
