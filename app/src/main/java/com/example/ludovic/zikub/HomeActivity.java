@@ -46,7 +46,7 @@ public class HomeActivity extends Activity {
     /**
      * Player utilisé dans notre application
      */
-    private MediaPlayer player;
+    private MediaPlayer player = new MediaPlayer();
 
     //Variable mise à jour toutes les secondes pour garder en mémoire où on en dans la musique
     private long currentSongLength;
@@ -54,6 +54,20 @@ public class HomeActivity extends Activity {
     /**
      * Représente les ID des boutons des musiques de la playlist
      */
+
+    final Handler mHandler = new Handler();
+    public Runnable mRunnable  = new Runnable() {
+        @Override
+        public void run() {
+            final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
+            final TextView time = (TextView) findViewById(R.id.time);
+            seekBar.setMax((int) currentSongLength / 1000);
+            int mCurrentPosition = player.getCurrentPosition() / 1000;
+            seekBar.setProgress(mCurrentPosition);
+            time.setText(convertDuration((long) player.getCurrentPosition()));
+            mHandler.postDelayed(this, 1000);
+        }
+    };
     private static final int[] BUTTON_IDS = {
             R.id.imageButton1,
             R.id.imageButton2,
@@ -61,6 +75,16 @@ public class HomeActivity extends Activity {
             R.id.imageButton4,
             R.id.imageButton5
     };
+    public void disconnection(View view) {
+        if(player.isPlaying()){
+            player.stop();
+            player.reset();
+        }
+        mHandler.removeCallbacks(mRunnable);
+        releaseMP();
+        finish();
+    }
+
 
     /**
      * Représente un tableau pour les musiques de la playlist.
@@ -255,7 +279,13 @@ public class HomeActivity extends Activity {
 
     /** Called when the user taps the share button */
     public void share(View view) {
-        //TODO Activity ou autre chose....
+        SharedPreferences prefs = HomeActivity.this.getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
+        int id_user = prefs.getInt("idUser", 0);
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "victor-basset.fr/getPlaylist/" + id_user);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Share your player !"));
     }
 
     /** Called when the user taps the play button */
@@ -379,21 +409,9 @@ public class HomeActivity extends Activity {
             mp.stop();
             mp.reset();
         }else {
-            final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
-            final TextView time = (TextView) findViewById(R.id.time);
             mp.start();
             playpause.setBackgroundResource(R.drawable.ic_pause);
-            final Handler mHandler = new Handler();
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    seekBar.setMax((int) currentSongLength / 1000);
-                    int mCurrentPosition = player.getCurrentPosition() / 1000;
-                    seekBar.setProgress(mCurrentPosition);
-                    time.setText(convertDuration((long) player.getCurrentPosition()));
-                    mHandler.postDelayed(this, 1000);
-                }
-            });
+            mHandler.postDelayed(mRunnable, 1000);
         }
     }
 

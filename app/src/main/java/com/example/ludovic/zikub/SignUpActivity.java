@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import java.io.IOException;
+import java.util.regex.Matcher;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,68 +34,77 @@ public class SignUpActivity extends Activity {
 
         TextView usernameExist = (TextView) findViewById(R.id.usernameExist);
         TextView mailExist = (TextView) findViewById(R.id.emailExist);
+        TextView passwordNotSame = (TextView) findViewById(R.id.passwordNotSame);
+
         usernameExist.setVisibility(View.INVISIBLE);
         mailExist.setVisibility(View.INVISIBLE);
+        passwordNotSame.setVisibility(View.INVISIBLE);
 
         final TextView username = (TextView) findViewById(R.id.username);
         TextView mail = (TextView) findViewById(R.id.email);
         TextView pwd = (TextView) findViewById(R.id.password);
+        TextView pwd2 = (TextView) findViewById(R.id.password2);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://54.37.68.6/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if((!pwd.getText().toString().equals(pwd2.getText().toString()))){
+            passwordNotSame.setVisibility(View.VISIBLE);
 
-        ZikubService service = retrofit.create(ZikubService.class);
-        Call<Result> result = service.signUp(
-                mail.getText().toString(),
-                username.getText().toString(),
-                pwd.getText().toString()
-        );
+        }else {
+            passwordNotSame.setVisibility(View.INVISIBLE);
 
-        result.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                String result = new Gson().toJson(response.body().getSuccess());
-                String wrongLogin = new Gson().toJson(response.body().getExistLogin());
-                String wrongEmail = new Gson().toJson(response.body().getExistMail());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://54.37.68.6/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-                if (response.isSuccessful()) {
-                    if(result.equals("true")) {
-                        int id_user = response.body().getIdUser();
+            ZikubService service = retrofit.create(ZikubService.class);
+            Call<Result> result = service.signUp(
+                    mail.getText().toString(),
+                    username.getText().toString(),
+                    pwd.getText().toString()
+            );
 
-                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
+            result.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    String result = new Gson().toJson(response.body().getSuccess());
+                    String wrongLogin = new Gson().toJson(response.body().getExistLogin());
+                    String wrongEmail = new Gson().toJson(response.body().getExistMail());
 
-                        sharedPreferences
-                                .edit()
-                                .putInt("idUser", id_user)
-                                .apply();
+                    if (response.isSuccessful()) {
+                        if (result.equals("true")) {
+                            int id_user = response.body().getIdUser();
 
-                        startActivity(intent);
-                    }
+                            SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences("Storage.Users", Context.MODE_PRIVATE);
 
-                    else {
-                        if(wrongLogin.equals("true")) {
-                            TextView usernameExist = (TextView) findViewById(R.id.usernameExist);
-                            usernameExist.setVisibility(View.VISIBLE);
+                            sharedPreferences
+                                    .edit()
+                                    .putInt("idUser", id_user)
+                                    .apply();
+
+                            startActivity(intent);
+                        } else {
+                            if (wrongLogin.equals("true")) {
+                                TextView usernameExist = (TextView) findViewById(R.id.usernameExist);
+                                usernameExist.setVisibility(View.VISIBLE);
+                            }
+
+                            if (wrongEmail.equals("true")) {
+                                TextView mailExist = (TextView) findViewById(R.id.emailExist);
+                                mailExist.setVisibility(View.VISIBLE);
+                            }
                         }
-
-                        if(wrongEmail.equals("true")) {
-                            TextView mailExist = (TextView) findViewById(R.id.emailExist);
-                            mailExist.setVisibility(View.VISIBLE);
-                        }
+                    } else {
+                        // error response, no access to resource?
+                        Log.v("fail", response.toString());
                     }
-                } else {
-                    // error response, no access to resource?
-                    Log.v("fail", response.toString());
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Log.d("Error", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    // something went completely south (like no internet connection)
+                    Log.d("Error", t.getMessage());
+                }
+            });
+        }
     }
 }

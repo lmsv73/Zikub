@@ -6,6 +6,7 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password</string>
+    <string name="confirm_prompt_password">Confirm Password</string>
     <string name="action_1"><b><font color='#ffffff'>1</font></b> \n\n Press here \n to add \n your first \n song</string>
     <string name="action_2"><b><font color='#ffffff'>2</font></b> \n\n Press here \n to add \n your second \n song</string>
     <string name="action_3"><b><font color='#ffffff'>3</font></b> \n\n Press here \n to add \n your third \n song</string>
@@ -15,6 +16,7 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_share">Share your Player</string>
+    <string name="username">Playlist of </string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -33,5 +35,6 @@
     <string name="login_social_text">Login with social</string>
     <string name="term_condition_text"><u>Terms et Conditions</u></string>
     <string name="username_exist">This username is already used</string>
+    <string name="password_not_same">The password not match with the confirm password</string>
     <string name="email_exist">An account is associated to this e-mail</string>
 </resources>
