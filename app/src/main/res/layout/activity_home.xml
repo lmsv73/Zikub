@@ -26,8 +26,17 @@
                 android:layout_gravity="center"
                 android:background="@drawable/sign_up_button"
                 android:text="@string/action_share"
+                android:onClick="share"
                 android:textColor="#fff"
                 android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/button"
+                android:layout_width="35dp"
+                android:layout_height="36dp"
+                android:onClick="disconnection"
+                android:background="#939aa4"
+                android:src="@drawable/ic_on_off_power_button"/>
 
         </FrameLayout>
         <FrameLayout
